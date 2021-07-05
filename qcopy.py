@@ -1,13 +1,11 @@
 import click
 import pyperclip
+import sys
 
 # TODO -> Check into cx-freeze for distribution or be lazy and use pyinstaller again
 
 
 @click.command()
-@click.argument("filename", type=click.Path(exists=True))
-def cli(filename):
-    with open(filename, "r") as file:
-        pyperclip.copy("".join(file.readlines()))
-
-    print(f"The contents of {filename} are now on your clipboard.")
+@click.argument("input", type=click.File("r"), default=sys.stdin)
+def cli(input):
+    pyperclip.copy("".join(input.readlines()))
